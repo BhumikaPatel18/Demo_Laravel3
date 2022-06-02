@@ -3,6 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\StudentController;
+use App\Http\Controllers\TeacherController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -17,7 +19,7 @@ use App\Http\Controllers\StudentController;
 Route::get('/', function () {
     if(Auth::check())
     {
-        return view('student.index');
+        return redirect()->route('students.index');
     }else{
         return view('auth.login');
     }
@@ -27,5 +29,6 @@ Auth::routes();
 
 //Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-Route::resource('/home',StudentController::class);
+Route::resource('/students',StudentController::class);
+Route::resource('/teacher',TeacherController::class);
 

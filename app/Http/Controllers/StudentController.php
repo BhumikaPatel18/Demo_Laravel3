@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Student;
 use Illuminate\Http\Request;
 use App\Http\Requests\StudentValidation;
-
+use Illuminate\Support\Facades\DB;
 
 class StudentController extends Controller
 {
@@ -16,8 +16,13 @@ class StudentController extends Controller
      */
     public function index()
     {
-        $student = Student::all();
+
+        // $student = Student::all();
+        // $student = DB::table('students')->select('name','subject','address')->leftJoin()->get();
+        $student = DB::table('students')->select('students.id As S_Id','students.name As stud_name','students.subject As stud_subject','teachers.name As tech_name')->leftJoin('teachers','students.subject',"=","teachers.subject")->get();
         //dd($student);
+        //$contactgroup= DB::table('people')->select('people.id As people_id','contact_groups.id As group_id','people.user_id','group_id','people.name As people_name','contact_groups.name As group_name','phone_number','cover_photo','formattedName')
+        //->leftJoin('contact_groups','people.group_id','=','contact_groups.id')->orderBy('people.name')->get();
         return view('student.index',compact('student'));
     }
 
@@ -39,9 +44,44 @@ class StudentController extends Controller
      */
     public function store(StudentValidation $request)
     {
-        $input = $request->validated();
-        Student::create($input);
-        return redirect()->route('home.index');
+        // $input = $request->validated();
+
+
+        $request->validate([
+            'name' => 'required',
+            'dob' => 'required',
+            'emai' => '',
+            'address'=>'',
+            'subject'=>'',
+            'gender' => '',
+            'hobby' => '',
+        ]);
+
+
+
+        $data = new Student;
+
+        $data->name = $request->name;
+
+        $data->dob= $request->dob;
+
+        $data->email= $request->email;
+        $data->address= $request->address;
+        $data->subject= $request->subject;
+        $data->gender= $request->gender;
+
+        $hobby = implode(',', $request->hobby);
+
+        $data->hobby=$hobby;
+
+        $data->save();
+
+
+
+
+
+        // Student::create($input);
+        return redirect()->route('students.index');
     }
 
     /**
@@ -75,9 +115,28 @@ class StudentController extends Controller
      * @param  \App\Models\Student  $student
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Student $student)
+    public function update(Request $request, $id)
     {
-        //
+        //dd($id,$request);
+        $input = $request->all();
+        $data = Student::find($id);
+        $data->name = $request->name;
+        $data->dob= $request->dob;
+        $data->email= $request->email;
+        $data->address= $request->address;
+        $data->subject= $request->subject;
+        $data->gender= $request->gender;
+
+        $hobby = implode(',', $request->hobby);
+
+        $data->hobby=$hobby;
+
+        $data->update();
+
+
+
+        // $student->fill($input)->save();
+        return redirect()->route('students.index');
     }
 
     /**
@@ -86,10 +145,10 @@ class StudentController extends Controller
      * @param  \App\Models\Student  $student
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Student  $student)
     {
-        $student = Student::find($id);
+
         $student->delete();
-        return redirect('/home');
+        return redirect()->route('students.index');
     }
 }

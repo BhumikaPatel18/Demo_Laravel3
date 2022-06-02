@@ -12,7 +12,7 @@
                         <li class="list-group-item">DOB: {{ $tshow->dob }}</li>
                         <li class="list-group-item">Email: {{ $tshow->email }}</li>
                         <li class="list-group-item">Address: {{ $tshow->address }}</li>
-                        <li class="list-group-item">State: {{ $tshow->state }}</li>
+                        <li class="list-group-item">Subject: {{ $tshow->subject }}</li>
                         <li class="list-group-item">Gender: {{ $tshow->gender }}</li>
                         <li class="list-group-item">Hobby: {{ $tshow->hobby }}</li>
                     </ul>
@@ -20,7 +20,7 @@
             </div>
 
             <div class="mt-3">
-                <a href="{{ route('home.index') }}" class="btn btn-primary">Back</a>
+                <a href="{{ route('students.index') }}" class="btn btn-primary">Back</a>
             </div>
         </div>
     </div>

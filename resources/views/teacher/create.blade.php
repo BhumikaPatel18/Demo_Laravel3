@@ -4,10 +4,10 @@
 <div class="container">
     <div class="col-8 m-auto">
         <h2 class="text-center">Create Form</h2>
-        <form action="{{ route('students.store') }}" method="post">
+        <form action="{{ route('teacher.store') }}" method="post">
             @csrf
 
-            @include('student.form')
+            @include('teacher.form')
             <button type="submit" class="btn btn-primary">Save</button>
             <a href="{{ route('students.index') }}" class="btn btn-primary">Cancel</a>
 
